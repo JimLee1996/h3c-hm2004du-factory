@@ -29,17 +29,20 @@ jobs:
           if-no-files-found: error
 
   macos:
-    runs-on: macos-latest
+    name: macOS x86_64
+    # macos-latest 现在都是 Apple Silicon，排队严重；macos-13 是 Intel runner，
+    # 直接原生编译 x86_64，无需交叉编译。
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo build --release
       - name: Package
-        run: tar -C target/release -czf h3c-hm2004du-factory-macos.tar.gz h3c-hm2004du-factory
+        run: tar -C target/release -czf h3c-hm2004du-factory-macos-x86_64.tar.gz h3c-hm2004du-factory
       - uses: actions/upload-artifact@v4
         with:
-          name: h3c-hm2004du-factory-macos
-          path: h3c-hm2004du-factory-macos.tar.gz
+          name: h3c-hm2004du-factory-macos-x86_64
+          path: h3c-hm2004du-factory-macos-x86_64.tar.gz
           if-no-files-found: error
 
   linux:
